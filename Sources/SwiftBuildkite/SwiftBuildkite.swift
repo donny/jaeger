@@ -2,21 +2,24 @@ import KituraRequest
 import SwiftyJSON
 
 public class SwiftBuildkite {
-    public let text = "Hello, Buildkite!"
+    private let token: String
     
-    public init() {
+    public init(token: String) {
+        self.token = token
     }
     
-    public func test(callback: @escaping (Organizations) -> Void) -> Void {
-        KituraRequest.request(.get,
-            "https://api.buildkite.com/v2/organizations",
-            parameters: [:],
-            encoding: JSONEncoding.default,
-            ).response { request, response, data, error in
-                guard let data = data else { return }
-                let json = JSON(data: data)
-                let org = Organizations(json: json)
-                callback(org)
+    private func request(_ method: Request.Method, _ URL: String, parameters: Request.Parameters? = nil) -> Request {
+        return KituraRequest.request(method, URL, parameters: parameters,
+                    encoding: JSONEncoding.default,
+                    headers: ["Authorization": "Bearer \(token)"])
+    }
+    
+    public func organizations(callback: @escaping (Organizations) -> Void) -> Void {
+        request(.get, "https://api.buildkite.com/v2/organizations"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let orgs = Organizations(json: JSON(data: data))
+            callback(orgs)
         }
     }
 }
