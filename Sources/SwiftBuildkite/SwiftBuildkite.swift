@@ -47,13 +47,22 @@ public class SwiftBuildkite {
     }
 
     public func pipeline(_ orgSlug: String, _ slug: String, callback: @escaping (Pipeline) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines" + slug
+        request(.get, "/organizations/" + orgSlug + "/pipelines/" + slug
         ).response { request, response, data, error in
             guard let data = data else { return }
             let pipeline = Pipeline(json: JSON(data: data))
             callback(pipeline)
         }
     }
-
     
+    // Builds
+    
+    public func build(_ orgSlug: String, _ pipeSlug: String, _ number: Int, callback: @escaping (Build) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)"
+            ).response { request, response, data, error in
+                guard let data = data else { return }
+                let build = Build(json: JSON(data: data))
+                callback(build)
+        }
+    }
 }
