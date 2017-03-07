@@ -27,7 +27,7 @@ public class SwiftBuildkite {
     }
     
     public func organization(_ orgSlug: String, callback: @escaping (Organization) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug
+        request(.get, "/organizations/\(orgSlug)"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let org = Organization(json: JSON(data: data))
@@ -38,7 +38,7 @@ public class SwiftBuildkite {
     // Pipelines
     
     public func pipelines(_ orgSlug: String, callback: @escaping (Pipelines) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines"
+        request(.get, "/organizations/\(orgSlug)/pipelines"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let pipelines = Pipelines(json: JSON(data: data))
@@ -47,7 +47,7 @@ public class SwiftBuildkite {
     }
 
     public func pipeline(_ orgSlug: String, _ slug: String, callback: @escaping (Pipeline) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines/" + slug
+        request(.get, "/organizations/\(orgSlug)/pipelines/\(slug)"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let pipeline = Pipeline(json: JSON(data: data))
@@ -67,7 +67,7 @@ public class SwiftBuildkite {
     }
     
     public func builds(_ orgSlug: String, callback: @escaping (Builds) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/builds"
+        request(.get, "/organizations/\(orgSlug)/builds"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let builds = Builds(json: JSON(data: data))
@@ -76,7 +76,7 @@ public class SwiftBuildkite {
     }
     
     public func builds(_ orgSlug: String, _ pipeSlug: String, callback: @escaping (Builds) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds"
+        request(.get, "/organizations/\(orgSlug)/pipelines/\(pipeSlug)/builds"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let builds = Builds(json: JSON(data: data))
@@ -85,7 +85,7 @@ public class SwiftBuildkite {
     }
 
     public func build(_ orgSlug: String, _ pipeSlug: String, _ number: Int, callback: @escaping (Build) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)"
+        request(.get, "/organizations/\(orgSlug)/pipelines/\(pipeSlug)/builds/\(number)"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let build = Build(json: JSON(data: data))
@@ -96,7 +96,7 @@ public class SwiftBuildkite {
     // Agents
     
     public func agents(_ orgSlug: String, callback: @escaping (Agents) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/agents"
+        request(.get, "/organizations/\(orgSlug)/agents"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let agents = Agents(json: JSON(data: data))
@@ -105,7 +105,7 @@ public class SwiftBuildkite {
     }
     
     public func agent(_ orgSlug: String, _ id: String, callback: @escaping (Agent) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/agents/" + id
+        request(.get, "/organizations/\(orgSlug)/agents/\(id)"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let agent = Agent(json: JSON(data: data))
@@ -116,7 +116,7 @@ public class SwiftBuildkite {
     // Artifacts
 
     public func artifacts(_ orgSlug: String, _ pipeSlug: String, _ number: Int, callback: @escaping (Artifacts) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)" + "/artifacts"
+        request(.get, "/organizations/\(orgSlug)/pipelines/\(pipeSlug)/builds/\(number)/artifacts"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let artifacts = Artifacts(json: JSON(data: data))
@@ -125,7 +125,7 @@ public class SwiftBuildkite {
     }
     
     public func artifacts(_ orgSlug: String, _ pipeSlug: String, _ number: Int, _ id: String, callback: @escaping (Artifacts) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)" + "/jobs/" + id + "/artifacts"
+        request(.get, "/organizations/\(orgSlug)/pipelines/\(pipeSlug)/builds/\(number)/jobs/\(id)/artifacts"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let artifacts = Artifacts(json: JSON(data: data))
@@ -134,7 +134,7 @@ public class SwiftBuildkite {
     }
 
     public func artifact(_ orgSlug: String, _ pipeSlug: String, _ number: Int, _ id: String, callback: @escaping (Artifact) -> Void) -> Void {
-        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)" + "/artifacts/" + id
+        request(.get, "/organizations/\(orgSlug)/pipelines/\(pipeSlug)/builds/\(number)/artifacts/\(id)"
         ).response { request, response, data, error in
             guard let data = data else { return }
             let artifact = Artifact(json: JSON(data: data))
