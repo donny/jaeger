@@ -112,5 +112,34 @@ public class SwiftBuildkite {
             callback(agent)
         }
     }
+    
+    // Artifacts
+
+    public func artifacts(_ orgSlug: String, _ pipeSlug: String, _ number: Int, callback: @escaping (Artifacts) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)" + "/artifacts"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let artifacts = Artifacts(json: JSON(data: data))
+            callback(artifacts)
+        }
+    }
+    
+    public func artifacts(_ orgSlug: String, _ pipeSlug: String, _ number: Int, _ id: String, callback: @escaping (Artifacts) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)" + "/jobs/" + id + "/artifacts"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let artifacts = Artifacts(json: JSON(data: data))
+            callback(artifacts)
+        }
+    }
+
+    public func artifact(_ orgSlug: String, _ pipeSlug: String, _ number: Int, _ id: String, callback: @escaping (Artifact) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)" + "/artifacts/" + id
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let artifact = Artifact(json: JSON(data: data))
+            callback(artifact)
+        }
+    }
 
 }
