@@ -56,13 +56,40 @@ public class SwiftBuildkite {
     }
     
     // Builds
+
+    public func builds(callback: @escaping (Build) -> Void) -> Void {
+        request(.get, "/builds"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let build = Build(json: JSON(data: data))
+            callback(build)
+        }
+    }
     
+    public func builds(_ orgSlug: String, callback: @escaping (Build) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/builds"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let build = Build(json: JSON(data: data))
+            callback(build)
+        }
+    }
+    
+    public func builds(_ orgSlug: String, _ pipeSlug: String, callback: @escaping (Build) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let build = Build(json: JSON(data: data))
+            callback(build)
+        }
+    }
+
     public func build(_ orgSlug: String, _ pipeSlug: String, _ number: Int, callback: @escaping (Build) -> Void) -> Void {
         request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds/\(number)"
-            ).response { request, response, data, error in
-                guard let data = data else { return }
-                let build = Build(json: JSON(data: data))
-                callback(build)
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let build = Build(json: JSON(data: data))
+            callback(build)
         }
     }
 }
