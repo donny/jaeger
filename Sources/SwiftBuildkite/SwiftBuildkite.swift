@@ -57,30 +57,30 @@ public class SwiftBuildkite {
     
     // Builds
 
-    public func builds(callback: @escaping (Build) -> Void) -> Void {
+    public func builds(callback: @escaping (Builds) -> Void) -> Void {
         request(.get, "/builds"
         ).response { request, response, data, error in
             guard let data = data else { return }
-            let build = Build(json: JSON(data: data))
-            callback(build)
+            let builds = Builds(json: JSON(data: data))
+            callback(builds)
         }
     }
     
-    public func builds(_ orgSlug: String, callback: @escaping (Build) -> Void) -> Void {
+    public func builds(_ orgSlug: String, callback: @escaping (Builds) -> Void) -> Void {
         request(.get, "/organizations/" + orgSlug + "/builds"
         ).response { request, response, data, error in
             guard let data = data else { return }
-            let build = Build(json: JSON(data: data))
-            callback(build)
+            let builds = Builds(json: JSON(data: data))
+            callback(builds)
         }
     }
     
-    public func builds(_ orgSlug: String, _ pipeSlug: String, callback: @escaping (Build) -> Void) -> Void {
+    public func builds(_ orgSlug: String, _ pipeSlug: String, callback: @escaping (Builds) -> Void) -> Void {
         request(.get, "/organizations/" + orgSlug + "/pipelines/" + pipeSlug + "/builds"
         ).response { request, response, data, error in
             guard let data = data else { return }
-            let build = Build(json: JSON(data: data))
-            callback(build)
+            let builds = Builds(json: JSON(data: data))
+            callback(builds)
         }
     }
 
@@ -92,4 +92,25 @@ public class SwiftBuildkite {
             callback(build)
         }
     }
+    
+    // Agents
+    
+    public func agents(_ orgSlug: String, callback: @escaping (Agents) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/agents"
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let agents = Agents(json: JSON(data: data))
+            callback(agents)
+        }
+    }
+    
+    public func agent(_ orgSlug: String, _ id: String, callback: @escaping (Agent) -> Void) -> Void {
+        request(.get, "/organizations/" + orgSlug + "/agents/" + id
+        ).response { request, response, data, error in
+            guard let data = data else { return }
+            let agent = Agent(json: JSON(data: data))
+            callback(agent)
+        }
+    }
+
 }
