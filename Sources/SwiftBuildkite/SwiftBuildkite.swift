@@ -1,6 +1,12 @@
 import KituraRequest
 import SwiftyJSON
 
+public enum SwiftBuildkiteError: Error {
+    case clientError(code: Int)
+    case serverError(code: Int)
+    case unknownError(code: Int)
+}
+
 public enum Result<Value> {
     case success(Value)
     case failure(Error)
@@ -26,6 +32,22 @@ public class SwiftBuildkite {
                 return
             }
             
+            if let code = response?.statusCode.rawValue {
+                switch code {
+                case 200:
+                    break
+                case 400...499:
+                    callback(Result.failure(SwiftBuildkiteError.clientError(code: code)))
+                    return
+                case 500...599:
+                    callback(Result.failure(SwiftBuildkiteError.serverError(code: code)))
+                    return
+                default:
+                    callback(Result.failure(SwiftBuildkiteError.unknownError(code: code)))
+                    return
+                }
+            }
+
             guard let data = data else { return /* callback() */ }
             callback(Result.success(JSON(data: data)))
         }
