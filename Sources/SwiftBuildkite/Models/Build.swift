@@ -1,12 +1,18 @@
 import Foundation
 import SwiftyJSON
 
+public enum BuildState: String {
+    case running, scheduled, passed, failed, blocked, canceled, canceling, skipped, finished
+    case notRun = "not_run"
+    case unknown
+}
+
 public struct Build {
     public let id: String
     public let url: URL?
     public let web_url: URL?
     public let number: Int
-    public let state: String
+    public let state: BuildState
     public let message: String
     public let commit: String
     public let branch: String
@@ -22,7 +28,7 @@ public struct Build {
         url = URL(string: json["url"].stringValue)
         web_url = URL(string: json["web_url"].stringValue)
         number = json["number"].intValue
-        state = json["state"].stringValue
+        state = BuildState(rawValue: json["state"].stringValue) ?? BuildState.unknown
         message = json["message"].stringValue
         commit = json["commit"].stringValue
         branch = json["branch"].stringValue
