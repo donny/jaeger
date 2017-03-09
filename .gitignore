@@ -2,3 +2,7 @@
 /.build
 /Packages
 /*.xcodeproj
+
+/Client/.build
+/Client/Packages
+/Client/*.xcodeproj
