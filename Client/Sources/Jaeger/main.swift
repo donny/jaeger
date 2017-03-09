@@ -1,41 +1,25 @@
 import SwiftBuildkite
 import Foundation
 
-print("Hello World")
+print("Example of using SwiftBuildkite\n")
 
-let b = SwiftBuildkite(token: "")
-//b.organizations { (result) in
-//    switch result {
-//    case .success(let value):
-//        for org in value.organizations {
-//            print(org.slug)
-//            if let date = org.created_at {
-//                print(date)
-//            }
-//
-//            if let string = org.pipelines_url?.absoluteString {
-//                print(string)
-//            }
-//        }
-//    case .failure(let error):
-//        print(error)
-//    }
-//}
+let buildkiteToken = "xxx"
+let b = SwiftBuildkite(token: buildkiteToken)
 
-//b.pipeline("rea", "resi-mobile-ios") { (pipeline) in
-//    print(pipeline)
-//}
-
-
-b.builds("rea", "resi-mobile-ios", parameters: ["state": "passed"]) { (result) in
+b.organizations { (result) in
     switch result {
     case .success(let value):
-        for org in value.builds {
-            print("\(org.number): \(org.state)")
+        for org in value.organizations {
+            guard let date = org.created_at else { continue }
+            guard let agents_url = org.agents_url else { continue }
+            guard let pipelines_url = org.pipelines_url else { continue }
+            
+            print("Organization Slug: \(org.slug) created at \(date)")
+            print("Created at: \(date)")
+            print("Agents URL: \(agents_url)")
+            print("Pipelines URL: \(pipelines_url)")
         }
     case .failure(let error):
         print(error)
     }
 }
-
-print("Hello World")
