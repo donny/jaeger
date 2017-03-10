@@ -10,6 +10,47 @@ According to their GitHub integration [entry](https://github.com/integrations/bu
 
 ### Project
 
+Jaeger is a Swift library for the [Buildkite API](https://buildkite.com/docs/rest-api) and it requires a Buildkite authentication token that can be generated from the Buildkite dashboard. Jaeger can be used by client apps by specifying it as a dependency. An example of a [client](https://github.com/donny/jaeger/blob/master/Client) app is provided in the repository with the following `Package.swift`:
+
+```swift
+import PackageDescription
+
+let package = Package(
+    name: "client",
+    targets: [
+        Target(name: "Client")
+    ],
+    dependencies: [
+        .Package(url: "https://github.com/donny/jaeger.git", majorVersion: 0, minor: 1)
+    ]
+)
+```
+
+The library can be used to build, for example, a Swift Buildkite command-line interface to query Buildkite data. At the moment, Jaeger only provides `read-only` functions. A small Swift code to demonstrate the API usage is shown below:
+
+```swift
+import SwiftBuildkite
+import Foundation
+
+print("Example of using SwiftBuildkite\n")
+
+let buildkiteToken = "xxx"
+let b = SwiftBuildkite(token: buildkiteToken)
+
+b.organizations { (result) in
+    switch result {
+    case .success(let value):
+        for org in value.organizations {
+            guard let date = org.created_at else { continue }            
+            print("Organization Slug: \(org.slug) created at \(date)")
+        }
+    case .failure(let error):
+        print(error)
+    }
+}
+
+```
+
 Screenshot of the example client usage:
 
 ![Screenshot](https://raw.githubusercontent.com/donny/jaeger/master/screenshot.png)
