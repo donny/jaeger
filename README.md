@@ -63,4 +63,4 @@ As an example, take a look at the data model for [`Organization`](https://github
 
 ### Conclusion
 
-...
+I have to say that using Swift to build APIs is quite a pleasant experience. The type safety ensures that the functions receive the correct argument types and we can be confident about it. SwiftyJSON is quite a nice library to use; we can query the JSON responses easily without being too verbose. It's still early days for Swift Package Manager I think. It's not yet as powerful as Node Package Manager (npm). But I'm optimistic that it will improve. And I really like Buildkite, it's a very nice CI and powerful build automation tool.
