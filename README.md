@@ -57,7 +57,9 @@ Screenshot of the example client usage:
 
 ### Implementation
 
-...
+Jaeger is implemented using the [Swift](https://swift.org) programming language and utilising the [Swift Package Manager](https://swift.org/package-manager). It uses [KituraRequest](https://github.com/IBM-Swift/Kitura-Request) to make the HTTP calls to Buildkite and; uses [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON) to parse the JSON responses and convert them to Swift data models.
+
+As an example, take a look at the data model for [`Organization`](https://github.com/donny/jaeger/blob/master/Sources/SwiftBuildkite/Models/Organization.swift) and [`Organizations`](https://github.com/donny/jaeger/blob/master/Sources/SwiftBuildkite/Models/Organizations.swift).
 
 ### Conclusion
 
